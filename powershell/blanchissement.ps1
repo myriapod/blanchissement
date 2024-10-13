@@ -40,7 +40,7 @@ if (-Not (Test-Path $path)) {
 # Blanchissement des fichiers
 Write-Output "Fichiers blanchis dans $path :"
 # Lister les fichiers et dossiers de manière récursive
-DIR -r  $path | % { 
+Get-ChildItem -r  $path | ForEach-Object { 
     # Modifier uniquement les fichiers et pas les dossiers
     if ($_.PsIsContainer -eq $false) { 
         Write-Output "Working on : "(Get-Item $_.FullName | Resolve-Path -Relative)
