@@ -5,11 +5,7 @@
 ## Date dernière modification :                            ##
 #############################################################
 
-# Début du script
-Write-Output "--- Script de blanchissement des logs ---"
-
-# Récupération de la liste spécifique au réseau
-$liste_reseau = "sfr","redhat"
+# Définition des fonctions
 function get_reseau {
     return Read-Host -Prompt "Entrez le nom du réseau concerné parmi $liste_reseau"
 }
@@ -17,24 +13,25 @@ function get_path {
     return Read-Host -Prompt "Entrez le chemin vers le dossier/fichier à blanchir"
 }
 function test_path($path) {
-    if (-Not (Test-Path $path)) {
-        return $false
-    }
+    if (-Not (Test-Path $path)) {return $false}
 }
+
+# Début du script
+Write-Output "--- Script de blanchissement des logs ---"
+
+# Récupération de la liste spécifique au réseau
+$liste_reseau = "sfr","redhat"
 
 # Définition du fichier output
 $date = (Get-Date -format "yyyyMMdd")
 $output_path = ([string](Get-Location)+"\sortie_blanchissement\"+$date)
-if (test_path($output_path) == $false) {
-    mkdir $output_path
-}
+if (test_path($output_path) == $false) {mkdir $output_path}
 
 $reseau = get_reseau
 if (($liste_reseau -contains $reseau) -eq $false) {
     Write-Error -Message "Le reseau n'est pas dans la liste des réseaux disponibles ($liste_reseau)"
     $reseau = get_reseau
 }
-
 
 # Récupération de la liste des regex indépendemment du réseau
 $regex = (Get-Content (Get-ChildItem -Path (Get-Location) -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match "regex-ps" })) | Out-String | ConvertFrom-Json
@@ -71,8 +68,10 @@ Try {
 }
 
 $output_path += "\"+$path.Split("\")[-1]
+
 # Blanchissement des fichiers
 Write-Output "Blanchissement des fichiers de $path dans $output_path :"
+
 # Lister les fichiers et dossiers de manière récursive
 Get-ChildItem -r  $output_path | ForEach-Object { 
     # Modifier uniquement les fichiers et pas les dossiers
