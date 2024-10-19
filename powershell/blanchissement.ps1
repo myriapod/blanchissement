@@ -1,7 +1,6 @@
 # Définition des fonctions
 function get_reseau {return Read-Host -Prompt "Entrez le nom du reseau concerne parmi $liste_reseau"}
 function get_path {return Read-Host -Prompt "Entrez le chemin vers le dossier/fichier a blanchir"}
-
 function test_path($path) {if (-Not (Test-Path $path)) {return $false}}
  
 # Affichage de l'aide avec -help
