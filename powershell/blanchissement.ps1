@@ -1,11 +1,3 @@
-#############################################################
-## Script de blanchissement des logs/fichiers              ##
-## Fait par : Solene Poydenot                              ##
-## Date création : 13/10/2024                              ##
-## Date dernière modification :                            ##
-#############################################################
-
-
 # Définition des fonctions
 function get_reseau {return Read-Host -Prompt "Entrez le nom du reseau concerne parmi $liste_reseau"}
 function get_path {return Read-Host -Prompt "Entrez le chemin vers le dossier/fichier a blanchir"}
